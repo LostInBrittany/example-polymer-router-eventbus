@@ -1,0 +1,45 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-material/paper-material.html">
+<link rel="import" href="../paper-button/paper-button.html">
+<link rel="import" href="../iron-signals/iron-signals.html">
+
+<dom-module id="example-panel">
+  <template>
+    <style>
+      :host {
+        
+      }
+    </style>
+    <paper-material elevation="2">
+      <div>
+        <h1>{{label}} active</h1>
+      </div>
+      
+      <div>
+        <template is="dom-repeat" items="{{exit}}">
+          <paper-button raised on-click="goToRoute">Go to {{item.label}}</paper-button>
+        </template>
+      </div>
+    </paper-material>    
+  </template>
+  <script>
+    Polymer({
+      is: "example-panel",
+      properties: {
+        label:{
+          type: String,
+          value: ''
+        },
+        exit:{
+          type: Array,
+          value: function() { return []; }
+        },        
+      },
+      goToRoute: function(e) {
+        var item = e.model.item;
+        console.debug("[example-panel] goToRoute ", item.route);
+        this.fire('iron-signal', {name: "route", data: item.route});
+      }
+    });
+  </script>
+</dom-module>

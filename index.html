@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+<title>Polymer example - Add data to table</title>
+
+
+<link rel="icon" href="favicon.ico" type="image/x-icon"/>
+<link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
+
+<style>
+  body {
+  }
+  paper-material {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 50px;
+  }
+</style>
+
+<script src="../webcomponentsjs/webcomponents.js"></script>
+
+
+<!-- Polymer -->
+<link rel="import" href="../polymer/polymer.html">
+
+
+<link rel="import" href="../carbon-route/carbon-location.html">
+<link rel="import" href="../carbon-route/carbon-route.html">
+<link rel="import" href="../iron-signals/iron-signals.html">
+<link rel="import" href="./example-panel.html">
+
+
+
+</head>
+
+
+<body>
+  
+  
+  <div class="container">
+    <example-main></example-main> 
+  </div>
+  
+  
+  
+  <dom-module id="example-main">
+     <template>   
+      <h1>Example</h1>
+      <carbon-location route="{{route}}" use-hash-as-path></carbon-location>
+      
+      <carbon-route 
+        route="{{route}}" 
+        pattern="/a" 
+        active="{{aActive}}">
+      </carbon-route>
+      <carbon-route 
+        route="{{route}}" 
+        pattern="/b"    
+        active="{{bActive}}">
+      </carbon-route>
+      <carbon-route 
+        route="{{route}}" 
+        pattern="/c"  
+        active="{{cActive}}">
+      </carbon-route>
+      
+       
+      <iron-signals on-iron-signal-route="routeChanged"></iron-signals>   
+         
+      <template is="dom-if" if="{{aActive}}">  
+        <example-panel label='A' exit={{exitForA}}></example-panel>
+      </template>
+       
+       
+      <template is="dom-if" if="{{bActive}}">  
+        <example-panel label='B' exit={{exitForB}}></example-panel>
+      </template>
+      
+      <template is="dom-if" if="{{cActive}}">  
+        <example-panel label='C' exit={{exitForC}}></example-panel>
+      </template>
+      
+    </template>
+    <script>      
+      HTMLImports.whenReady(function () {
+        Polymer({
+          is: "example-main",
+          properties: {       
+          },
+          ready: function() {
+            this.exitForA = [ {route: '/b', label: 'B'},  {route: '/c', label: 'C'}];
+            this.exitForB = [ {route: '/a', label: 'A'},  {route: '/c', label: 'C'}];
+            this.exitForC = [ {route: '/a', label: 'A'},  {route: '/b', label: 'B'}];
+            if (!this.route || !this.route.path) {
+              console.debug("Setting initial route")
+              this.set('route.path', '/a');
+              window.location.hash = '/a';
+            }  
+          },
+          routeChanged: function(e, detail, sender) {
+            console.debug("[example-main] routeChanged ", detail);
+              this.set('route.path', detail);
+              window.location.hash = detail;
+            
+          },
+        });
+      });
+    </script>
+  </dom-module>
+  
+   
+</body>
+</html>

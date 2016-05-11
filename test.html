@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Green leaf, une façon simple de déclarer ses congés exceptionnels</title>
+
+  <!-- Polyfill Web Components support for older browsers -->
+  <script src="../webcomponentsjs/webcomponents-lite.min.js"></script>
+ <link rel="stylesheet" href="../bootstrap/dist/css/bootstrap.min.css">
+
+
+  <!-- Import `carbon-route` element -->
+  <link rel="import" href="../carbon-route/carbon-location.html">
+  <link rel="import" href="../carbon-route/carbon-route.html">
+
+
+  <!-- Import iron-pages -->
+  <link rel="import" href="../iron-pages/iron-pages.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+
+</head>
+
+<body unresolved>
+
+  <green-leaf></green-leaf>
+    
+  <dom-module id="green-leaf">
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <template>
+      <carbon-location route="{{route}}" use-hash-as-path></carbon-location>
+
+      <carbon-route route="{{route}}" pattern="/home" active="{{homeActive}}"></carbon-route>
+      <carbon-route route="{{route}}" pattern="/login" active="{{loginActive}}"></carbon-route>
+      <carbon-route route="{{route}}" pattern="/demande-new" active="{{newDemandeActive}}"></carbon-route>
+      <carbon-route route="{{route}}" pattern="/demandes"    active="{{demandeListActive}}"></carbon-route>
+      <carbon-route route="{{route}}" pattern="/demande/:id" data="{{demandeId}}" active="{{demandeDetailActive}}"></carbon-route>
+      
+      
+      {{_anonymous}}
+      
+      
+      <template is="dom-if" if="{{homeActive}}">
+        
+      <template is="dom-if" if="{{_anonymous}}">
+        Hello, you're not connected
+      </template>
+      <template is="dom-if" if="{{_userLogged}}">
+        Hello, Mr [[user.name]]
+        </template>
+      </template>
+        <template is="dom-if" if="{{newDemandeActive}}">
+          <div class="container">
+              <new-demande></new-demande>
+          </div>
+        </template>
+
+        <template is="dom-if" if="{{demandeListActive}}">
+          <div class="container">
+            <demande-list demandes="{{demandes}}"></demande-list>
+          </div>
+        </template>
+
+        <template is="dom-if" if="{{demandeDetailActive}}">
+          <div class="container">
+            <demande-details id="{{demandeId.id}}"></demande-details>
+          </div>
+        </template>
+     
+    </template>
+   <script>
+      HTMLImports.whenReady(function () {
+        Polymer({
+          is: 'green-leaf',
+          properties: {
+            user: {
+              type:Object, 
+              value: function() { return {}; } 
+            },
+            demandes: {type: Array,},
+            _anonymous:{type: Boolean, computed: "isAnonymous(user)"},
+            _userLogged:{type: Boolean, computed: "isConnected(user)"}
+          },
+          route:{
+            type: Object
+          },
+          ready: function(){
+            user={};
+          },
+          attached: function() {
+            
+            if (!this.route.path) {
+              console.debug("Setting initial route")
+              this.set('route.path', '/home');
+              window.location.hash = '/home';
+            }            
+            console.debug("Initial route", this.route.path);
+          },
+          isConnected: function(){
+            console.debug("isConnected called", this.user)
+            return this.user != {};
+          },
+          isAnonymous: function(){
+            console.debug("isAnonymous called", this.user)
+            return this.user == {};
+          },
+          gotDemandes: function(event, ironRequest) {
+            console.debug("gotDemandes")
+            this.demandes = ironRequest.response;
+          }
+        });
+      });
+    </script>
+  </dom-module>
+  
+</body>
+</html>

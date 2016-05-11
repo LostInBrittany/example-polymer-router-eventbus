@@ -1,0 +1,29 @@
+{
+  "name": "example-polymer-router-eventbus",
+  "authors": [
+    "Horacio Gonzalez <horacio.gonzalez@gmail.com>"
+  ],
+  "description": "Example of array data binding with Polymer",
+  "keywords": [
+    "web-component",
+    "web-components",
+    "polymer"
+  ],
+  "main": "",
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0"
+    }
+  ],
+  "homepage": "",
+  "ignore": [],
+  "dependencies": {
+    "polymer": "~1.4.0",
+    "paper-material": "^1.0.6",
+    "carbon-route": "^0.8.4",
+    "paper-button": "^1.0.11",
+    "iron-signals": "^1.0.3"
+  },
+  "devDependencies": {}
+}
