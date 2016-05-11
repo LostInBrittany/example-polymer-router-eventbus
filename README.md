@@ -1,6 +1,6 @@
-## example-polymer-array-binding
+## example-polymer-router-eventbus
 
-A quick example of array data binding on Polymer
+A quick example of routing in Polymer using carbon-route et iron-signals 
 
 
 ![Screenshot](./screenshot.png)
@@ -27,7 +27,7 @@ A quick example of array data binding on Polymer
   ```
   $ polyserve 
   Starting Polyserve on port 8080
-  Files in this directory are available under http://localhost:8080/components/example-polymer-array-binding/   
+  Files in this directory are available under http://localhost:8080/components/example-polymer-router-eventbus/   
   ```
   
   
